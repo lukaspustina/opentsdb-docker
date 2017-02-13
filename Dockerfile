@@ -4,8 +4,8 @@ RUN apk --update add rsyslog bash openjdk7 make wget
 
 RUN apk --update add --virtual builddeps build-base autoconf automake git python
 
-ENV TSDB_VERSION 2.2.0
-ENV HBASE_VERSION 1.1.4
+ENV TSDB_VERSION 2.3.0
+ENV HBASE_VERSION 1.1.8
 ENV JAVA_HOME /usr/lib/jvm/java-1.7-openjdk
 ENV PATH $PATH:/usr/lib/jvm/java-1.7-openjdk/bin/
 
