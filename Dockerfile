@@ -5,7 +5,7 @@ RUN apk --update add rsyslog bash openjdk7 make wget
 RUN apk --update add --virtual builddeps build-base autoconf automake git python
 
 ENV TSDB_VERSION 2.3.0
-ENV HBASE_VERSION 1.1.8
+ENV HBASE_VERSION 1.1.12
 ENV JAVA_HOME /usr/lib/jvm/java-1.7-openjdk
 ENV PATH $PATH:/usr/lib/jvm/java-1.7-openjdk/bin/
 
@@ -18,7 +18,10 @@ RUN wget --no-check-certificate -O v${TSDB_VERSION}.zip https://github.com/OpenT
     unzip v${TSDB_VERSION}.zip && \
     rm v${TSDB_VERSION}.zip
 WORKDIR /opt/opentsdb/opentsdb-${TSDB_VERSION}
+RUN echo "tsd.storage.fix_duplicates=true" >> src/opentsdb.conf
+RUN echo "tsd.storage.max_tags=12" >> src/opentsdb.conf
 RUN ./build.sh
+RUN sed -i -E "s|-classpath \"|-classpath \"/opt/opentsdb/opentsdb-${TSDB_VERSION}/src:|" /opt/opentsdb/opentsdb-${TSDB_VERSION}/build/tsdb
 
 RUN apk del builddeps && rm -rf /var/cache/apk/*
 
